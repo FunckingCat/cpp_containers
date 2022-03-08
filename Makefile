@@ -1,7 +1,10 @@
 NAME		=	ft_containers
 
-HEADER		=	
-SRC			=	
+HEADER		=	./containers/map.hpp \
+				./containers/stack.hpp \
+				./containers/vector.hpp \
+				./containers/RBTree.hpp
+SRC			=	./tests/main.cpp
 
 CC= clang++ -std=c++98
 FLAGS = -Wall -Werror -Wextra
@@ -23,5 +26,8 @@ fclean: clean
 	$(RM) $(NAME)
 
 re: fclean all
+
+run: all
+	./ft_containers
 
 .PHONY: all clean fclean re 
