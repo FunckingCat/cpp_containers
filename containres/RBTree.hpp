@@ -33,9 +33,7 @@ private:
 	void removeFixUp(RBTNode<T>* &root, RBTNode<T>* node, RBTNode<T>*parent);
 	RBTNode<T>* search(RBTNode<T>*node, T key) const;
 	void print(const std::string& prefix, const RBTNode<T>* node, bool isLeft) const;
-	void preOrder(RBTNode<T>* tree)const;
 	void inOrder(RBTNode<T>* tree)const;
-	void postOrder(RBTNode<T>* tree)const;
 
 public:
 	RBTree();
@@ -45,9 +43,7 @@ public:
 	void remove(T key);
 	RBTNode<T>* search(T key);
 	void print();
-	void preOrder();
 	void inOrder();
-	void postOrder();
 };
 
 template<class T>
@@ -412,23 +408,6 @@ void RBTree<T>::print(const std::string& prefix, const RBTNode<T>* node, bool is
 	print( prefix + (isLeft ? "│   " : "    "), node->right, false);
 };
 
-template<class T>		// Предзаказ обхода дерева РБ
-void RBTree<T>::preOrder() {
-	if (root == NULL)
-		std::cout << "empty RBtree\n";
-	else
-		preOrder(root);
-};
-
-template<class T>		 
-void RBTree<T>::preOrder(RBTNode<T>* tree)const {
-	if (tree != NULL) {
-		std::cout << tree->key << " ";
-		preOrder(tree->left);
-		preOrder(tree->right);
-	}
-};
-
 template<class T>		// Обход дерева RB
 void RBTree<T>::inOrder() {
 	if (root == NULL)
@@ -443,23 +422,6 @@ void RBTree<T>::inOrder(RBTNode<T>* tree)const {
 		inOrder(tree->left);
 		std::cout << tree->key << " ";
 		inOrder(tree->right);
-	}
-};
-
-template<class T>      // После обхода дерева RB
-void RBTree<T>::postOrder() {
-	if (root == NULL)
-		std::cout << "empty RBtree\n";
-	else
-		postOrder(root);
-};
-
-template<class T>		
-void RBTree<T>::postOrder(RBTNode<T>* tree)const {
-	if (tree != NULL) {
-		postOrder(tree->left);
-		postOrder(tree->right);
-		std::cout << tree->key << " ";
 	}
 };
 
