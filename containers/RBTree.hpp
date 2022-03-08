@@ -2,19 +2,18 @@
 #define RBTREE_HPP
 
 #include <iostream>
-#include <iomanip>
 
-enum RBTColor { Black, Red };
+enum Color { Black, Red };
 
 template<class T>
-struct  RBTNode
+struct  Node
 {
 	T key;
-	RBTColor color;
-	RBTNode<T> * left;
-	RBTNode<T> * right;
-	RBTNode<T> * parent;
-	RBTNode(T k, RBTColor c, RBTNode* p, RBTNode*l, RBTNode*r) :
+	Color color;
+	Node<T> * left;
+	Node<T> * right;
+	Node<T> * parent;
+	Node(T k, Color c, Node* p, Node*l, Node*r) :
 		key(k), color(c), left(l), right(r), parent(p) { };
 };
 
@@ -22,18 +21,18 @@ template<class T>
 class  RBTree
 {
 private:
-	RBTNode<T>*root;
+	Node<T>*root;
 
-	void leftRotate(RBTNode<T>* &root, RBTNode<T>* x);
-	void rightRotate(RBTNode<T>* &root, RBTNode<T>* y);
-	void insert(RBTNode<T>* &root, RBTNode<T>* node);
-	void InsertFixUp(RBTNode<T>* &root, RBTNode<T>* node);
-	void destory(RBTNode<T>* &node);
-	void remove(RBTNode<T>*& root, RBTNode<T>*node);
-	void removeFixUp(RBTNode<T>* &root, RBTNode<T>* node, RBTNode<T>*parent);
-	RBTNode<T>* search(RBTNode<T>*node, T key) const;
-	void print(const std::string& prefix, const RBTNode<T>* node, bool isLeft) const;
-	void inOrder(RBTNode<T>* tree)const;
+	void leftRotate(Node<T>* &root, Node<T>* x);
+	void rightRotate(Node<T>* &root, Node<T>* y);
+	void insert(Node<T>* &root, Node<T>* node);
+	void InsertFixUp(Node<T>* &root, Node<T>* node);
+	void destory(Node<T>* &node);
+	void remove(Node<T>*& root, Node<T>*node);
+	void removeFixUp(Node<T>* &root, Node<T>* node, Node<T>*parent);
+	Node<T>* search(Node<T>*node, T key) const;
+	void print(const std::string& prefix, const Node<T>* node, bool isLeft) const;
+	void inOrder(Node<T>* tree)const;
 
 public:
 	RBTree();
@@ -41,7 +40,7 @@ public:
 
 	void insert(T key);
 	void remove(T key);
-	RBTNode<T>* search(T key);
+	Node<T>* search(T key);
 	void print();
 	void inOrder();
 };
@@ -57,7 +56,7 @@ RBTree<T>::~RBTree() {
 }
 
 template<class T>
-void RBTree<T>::destory(RBTNode<T>* &node) 
+void RBTree<T>::destory(Node<T>* &node) 
 {
 	if (node == NULL)
 		return;
@@ -68,8 +67,8 @@ void RBTree<T>::destory(RBTNode<T>* &node)
 };
 
 template<class T>
-void RBTree<T>::leftRotate(RBTNode<T>* &root, RBTNode<T>* x) {
-	RBTNode<T>*y = x->right;
+void RBTree<T>::leftRotate(Node<T>* &root, Node<T>* x) {
+	Node<T>*y = x->right;
 	x->right = y->left;
 	if (y->left != NULL)
 		y->left->parent = x;
@@ -88,8 +87,8 @@ void RBTree<T>::leftRotate(RBTNode<T>* &root, RBTNode<T>* x) {
 };
 
 template<class T>
-void RBTree<T>::rightRotate(RBTNode<T>*&root, RBTNode<T>*y) {
-	RBTNode<T>*x = y->left;
+void RBTree<T>::rightRotate(Node<T>*&root, Node<T>*y) {
+	Node<T>*x = y->left;
 	y->left = x->right;
 	if (x->right != NULL)
 		x->right->parent = y;
@@ -110,15 +109,15 @@ void RBTree<T>::rightRotate(RBTNode<T>*&root, RBTNode<T>*y) {
 template<class T>
 void RBTree<T>::insert(T key)
 {
-	RBTNode<T>*z = new RBTNode<T>(key, Red, NULL, NULL, NULL);
+	Node<T>*z = new Node<T>(key, Red, NULL, NULL, NULL);
 	insert(root, z);
 };
 
 template<class T>
-void RBTree<T>::insert(RBTNode<T>* &root, RBTNode<T>* node)
+void RBTree<T>::insert(Node<T>* &root, Node<T>* node)
 {
-	RBTNode<T> *x = root;
-	RBTNode<T> *y = NULL;
+	Node<T> *x = root;
+	Node<T> *y = NULL;
 	while (x != NULL)
 	{
 		y = x;
@@ -142,16 +141,16 @@ void RBTree<T>::insert(RBTNode<T>* &root, RBTNode<T>* node)
 };
 
 template<class T>
-void RBTree<T>::InsertFixUp(RBTNode<T>* &root, RBTNode<T>* node)
+void RBTree<T>::InsertFixUp(Node<T>* &root, Node<T>* node)
 {
-	RBTNode<T>*parent;
+	Node<T>*parent;
 	parent = node->parent;
 	while (node != RBTree::root  && parent->color == Red)
 	{
-		RBTNode<T>*gparent = parent->parent;
+		Node<T>*gparent = parent->parent;
 		if (gparent->left == parent)
 		{
-			RBTNode<T>*uncle = gparent->right;
+			Node<T>*uncle = gparent->right;
 			if (uncle != NULL && uncle->color == Red)
 			{
 				parent->color = Black;
@@ -175,7 +174,7 @@ void RBTree<T>::InsertFixUp(RBTNode<T>* &root, RBTNode<T>* node)
 		}
 		else
 		{
-			RBTNode<T>*uncle = gparent->left;
+			Node<T>*uncle = gparent->left;
 			if (uncle != NULL && uncle->color == Red)
 			{
 				gparent->color = Red;
@@ -205,20 +204,20 @@ void RBTree<T>::InsertFixUp(RBTNode<T>* &root, RBTNode<T>* node)
 template<class T>
 void RBTree<T>::remove(T key) 
 {
-	RBTNode<T>*deletenode = search(root,key);
+	Node<T>*deletenode = search(root,key);
 	if (deletenode != NULL)
 		remove(root, deletenode);
 };
 
 template<class T>
-void RBTree<T>::remove(RBTNode<T>*&root, RBTNode<T>*node)
+void RBTree<T>::remove(Node<T>*&root, Node<T>*node)
 {
-	RBTNode<T> *child, *parent;
-	RBTColor color;
+	Node<T> *child, *parent;
+	Color color;
 	// Левый и правый узлы удаленного узла не пусты (не конечные узлы)
 	if (node->left != NULL && node->right != NULL)
 	{
-		RBTNode<T> *replace = node;
+		Node<T> *replace = node;
 		// Найти узел-преемник (самый нижний левый узел правого поддерева текущего узла)
 		replace = node->right;
 		while (replace->left != NULL)
@@ -295,9 +294,9 @@ void RBTree<T>::remove(RBTNode<T>*&root, RBTNode<T>*node)
 };
 
 template<class T>
-void RBTree<T>::removeFixUp(RBTNode<T>* &root, RBTNode<T>* node,RBTNode<T>*parent)
+void RBTree<T>::removeFixUp(Node<T>* &root, Node<T>* node,Node<T>*parent)
 {
-	RBTNode<T>*othernode;
+	Node<T>*othernode;
 	while ((!node) || (node->color == Black && node != RBTree::root))
 	{
 		if (!parent)
@@ -372,13 +371,13 @@ void RBTree<T>::removeFixUp(RBTNode<T>* &root, RBTNode<T>* node,RBTNode<T>*paren
 };
 
 template<class T>
-RBTNode<T>* RBTree<T>::search(T key) 
+Node<T>* RBTree<T>::search(T key) 
 {
 	return search(root, key);
 };
 
 template<class T>
-RBTNode<T>* RBTree<T>::search(RBTNode<T>*node, T key) const
+Node<T>* RBTree<T>::search(Node<T>*node, T key) const
 {
 	if (node == NULL || node->key == key)
 		return node;
@@ -398,7 +397,7 @@ void RBTree<T>::print() {
 };
 
 template<class T>
-void RBTree<T>::print(const std::string& prefix, const RBTNode<T>* node, bool isLeft) const {
+void RBTree<T>::print(const std::string& prefix, const Node<T>* node, bool isLeft) const {
 	if (node == NULL)
 		return;
 	std::cout << prefix;
@@ -417,7 +416,7 @@ void RBTree<T>::inOrder() {
 };
 
 template<class T>		 
-void RBTree<T>::inOrder(RBTNode<T>* tree)const {
+void RBTree<T>::inOrder(Node<T>* tree)const {
 	if (tree != NULL) {
 		inOrder(tree->left);
 		std::cout << tree->key << " ";
