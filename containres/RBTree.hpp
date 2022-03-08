@@ -32,11 +32,11 @@ private:
 	void remove(RBTNode<T>*& root, RBTNode<T>*node);
 	void removeFixUp(RBTNode<T>* &root, RBTNode<T>* node, RBTNode<T>*parent);
 	RBTNode<T>* search(RBTNode<T>*node, T key) const;
-	void print(RBTNode<T>* node)const;
+	void print(const std::string& prefix, const RBTNode<T>* node, bool isLeft) const;
 	void preOrder(RBTNode<T>* tree)const;
 	void inOrder(RBTNode<T>* tree)const;
 	void postOrder(RBTNode<T>* tree)const;
-	
+
 public:
 	RBTree();
 	~RBTree();
@@ -396,25 +396,20 @@ void RBTree<T>::print() {
 	if (root == NULL)
 		std::cout << "empty RBtree\n";
 	else
-		print(root);
+		print("", root, false);
 };
 
 template<class T>
-void RBTree<T>::print(RBTNode<T>* node)const {
+void RBTree<T>::print(const std::string& prefix, const RBTNode<T>* node, bool isLeft) const {
 	if (node == NULL)
 		return;
-	if (node->parent == NULL)
-		std::cout << node->key << "(" << node->color << ") is root" << std::endl;
-	else if(node->parent->left==node)
-	{
-		std::cout << node->key << "(" << node->color << ") is "<<node->parent->key<<"'s "<<"left child" << std::endl;
-	}
-	else
-	{
-		std::cout << node->key << "(" << node->color << ") is " << node->parent->key << "'s " << "right child" << std::endl;
-	}
-	print(node->left);
-	print(node->right);
+	std::cout << prefix;
+	std::cout << (isLeft ? "├──" : "└──" );
+	// print the value of the node
+	std::cout << node->key << std::endl;
+	// enter the next tree level - left and right branch
+	print( prefix + (isLeft ? "│   " : "    "), node->left, true);
+	print( prefix + (isLeft ? "│   " : "    "), node->right, false);
 };
 
 template<class T>		// Предзаказ обхода дерева РБ
