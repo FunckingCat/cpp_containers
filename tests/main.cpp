@@ -1,13 +1,15 @@
-#include "../containres/RBTree.hpp"
+#include "../containers/RBTree.hpp"
 #include <iostream>
 #include <vector>
 
 int main() 
 {
-	std::vector<int> nums{10,40,30,60,90,70,20,50,80,100};
+	std::vector<int> nums;
+	for (int i = 0; i < 101; i += 10)
+		nums.push_back(i);
 	RBTree<int> tree;
-	for (auto num : nums)
-		tree.insert(num);
+	for (std::vector<int>::iterator num = nums.begin(); num != nums.end(); num++)
+		tree.insert(*num);
 	tree.inOrder();
 	std::cout << std::endl;
 	tree.print();

@@ -15,7 +15,7 @@ struct  RBTNode
 	RBTNode<T> * right;
 	RBTNode<T> * parent;
 	RBTNode(T k, RBTColor c, RBTNode* p, RBTNode*l, RBTNode*r) :
-		key(k), color(c), parent(p), left(l), right(r) { };
+		key(k), color(c), left(l), right(r), parent(p) { };
 };
 
 template<class T>
@@ -48,7 +48,7 @@ public:
 
 template<class T>
 RBTree<T>::RBTree() :root(NULL) {
-	root = nullptr;
+	root = NULL;
 }
 
 template<class T>
@@ -64,7 +64,7 @@ void RBTree<T>::destory(RBTNode<T>* &node)
 	destory(node->left);
 	destory(node->right);
 	delete node;
-	node = nullptr;
+	node = NULL;
 };
 
 template<class T>
@@ -267,7 +267,7 @@ void RBTree<T>::remove(RBTNode<T>*&root, RBTNode<T>*node)
 		return;
 	}
 	// Когда в удаленном узле только левый (правый) узел пуст, найдите дочерний узел удаленного узла
-	if (node->left != NULL)    
+	if (node->left != NULL)
 		child = node->left;
 	else
 		child = node->right;
@@ -302,7 +302,7 @@ template<class T>
 void RBTree<T>::removeFixUp(RBTNode<T>* &root, RBTNode<T>* node,RBTNode<T>*parent)
 {
 	RBTNode<T>*othernode;
-	while ((!node) || node->color == Black && node != RBTree::root)
+	while ((!node) || (node->color == Black && node != RBTree::root))
 	{
 		if (parent->left == node)
 		{
@@ -387,10 +387,10 @@ RBTNode<T>* RBTree<T>::search(RBTNode<T>*node, T key) const
 			return search(node->left, key);
 };
 
-template<class T>		// Вывод детальной информации о двоичном дереве
+template<class T>
 void RBTree<T>::print() {
 	if (root == NULL)
-		std::cout << "empty RBtree\n";
+		return ;
 	else
 		print("", root, false);
 };
@@ -401,17 +401,15 @@ void RBTree<T>::print(const std::string& prefix, const RBTNode<T>* node, bool is
 		return;
 	std::cout << prefix;
 	std::cout << (isLeft ? "├──" : "└──" );
-	// print the value of the node
 	std::cout << node->key << std::endl;
-	// enter the next tree level - left and right branch
 	print( prefix + (isLeft ? "│   " : "    "), node->left, true);
 	print( prefix + (isLeft ? "│   " : "    "), node->right, false);
 };
 
-template<class T>		// Обход дерева RB
+template<class T>
 void RBTree<T>::inOrder() {
 	if (root == NULL)
-		std::cout << "empty RBtree\n";
+		return ;
 	else
 		inOrder(root);
 };
