@@ -14,9 +14,9 @@ int main()
 	std::cout << std::endl;
 	tree.postOrder();
 	std::cout << std::endl;
-	std::cout << "FIND 30: \n";
-	std::cout << std::endl<<tree.search(30)->key<<std::endl;
-	std::cout << "DEL 100 \n";
+	std::cout << "\nFIND 30: ";
+	std::cout << tree.search(30)->key<<std::endl;
+	std::cout << "\nDEL 100 --> ";
 	tree.remove(100);
 	tree.preOrder();
 	std::cout << std::endl;
