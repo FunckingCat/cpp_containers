@@ -307,6 +307,8 @@ void RBTree<T>::removeFixUp(RBTNode<T>* &root, RBTNode<T>* node,RBTNode<T>*paren
 		if (parent->left == node)
 		{
 			othernode = parent->right;
+			if (!othernode)
+				return ;
 			if (othernode->color == Red)
 			{
 				othernode->color = Black;
@@ -318,6 +320,8 @@ void RBTree<T>::removeFixUp(RBTNode<T>* &root, RBTNode<T>* node,RBTNode<T>*paren
 			{
 				if (!(othernode->right) || othernode->right->color == Black)
 				{
+					if (!othernode->left)
+						return ; // Sega
 					othernode->left->color=Black;
 					othernode->color = Red;
 					rightRotate(root, othernode);
