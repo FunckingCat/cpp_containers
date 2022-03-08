@@ -222,9 +222,7 @@ void RBTree<T>::remove(RBTNode<T>*&root, RBTNode<T>*node)
 		// Найти узел-преемник (самый нижний левый узел правого поддерева текущего узла)
 		replace = node->right;
 		while (replace->left != NULL)
-		{
 			replace = replace->left;
-		}
 		// Случай, когда удаленный узел не является корневым узлом
 		if (node->parent != NULL)
 		{
@@ -242,7 +240,6 @@ void RBTree<T>::remove(RBTNode<T>*&root, RBTNode<T>*node)
 		child = replace->right;
 		parent = replace->parent;
 		color = replace->color;
-		
 		// Удаленный узел является родительским узлом замещающего узла (repalce)
 		if (parent == node)
 			parent = replace;
@@ -279,7 +276,7 @@ void RBTree<T>::remove(RBTNode<T>*&root, RBTNode<T>*node)
 		child->parent = parent;
 	}
 	// Удаленный узел не является корневым узлом
-	if (parent)     
+	if (parent)
 	{
 		if (node == parent->left)
 			parent->left = child;
@@ -288,8 +285,7 @@ void RBTree<T>::remove(RBTNode<T>*&root, RBTNode<T>*node)
 	}
 	// Удаленный узел является корневым узлом
 	else
-		RBTree::root = child;		
-
+		RBTree::root = child;
 	if (color == Black)
 	{
 		removeFixUp(root, child, parent);
@@ -304,11 +300,13 @@ void RBTree<T>::removeFixUp(RBTNode<T>* &root, RBTNode<T>* node,RBTNode<T>*paren
 	RBTNode<T>*othernode;
 	while ((!node) || (node->color == Black && node != RBTree::root))
 	{
+		if (!parent)
+			return ; //Sega
 		if (parent->left == node)
 		{
 			othernode = parent->right;
 			if (!othernode)
-				return ;
+				return ; //Sega
 			if (othernode->color == Red)
 			{
 				othernode->color = Black;
