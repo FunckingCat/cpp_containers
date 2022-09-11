@@ -24,3 +24,7 @@
 *.app
 
 ft_*
+containers
+
+.DS_Store
+.idea

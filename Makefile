@@ -1,34 +1,37 @@
-NAME		=	ft_containers
+SRC			=	main
 
-HEADER		=	./containers/map.hpp \
-				./containers/stack.hpp \
-				./containers/vector.hpp \
-				./containers/RBTree.hpp
+INC			=	utils
 
-SRC			=	./tests/main.cpp
+SRCS		= $(addsuffix .cpp, ${SRC})
 
-CC= clang++ -std=c++98
-FLAGS = -Wall -Werror -Wextra
-OBJ = $(SRC:.cpp=.o)
-RM = rm -f
+INCS		= $(addsuffix .hpp, ${INC})
 
-all: $(NAME)
+OBJS		= ${SRCS:.cpp=.o}
 
-%.o : %.cpp $(HEADER) Makefile
-	$(CC) $(FLAGS) -c $< -o $@
+NAME		= containers
 
-$(NAME): $(OBJ)
-	$(CC) $(FLAGS) -o $(NAME) $(OBJ)
+CC			= clang++
+RM			= rm -f
+
+CFLAGS		= -Wall -Wextra -Werror -std=c++98
+
+.cpp.o:
+			${CC} ${CFLAGS} -c $< -o ${<:.cpp=.o}
+
+$(NAME):	${OBJS}
+			${CC} ${CFLAGS} -o ${NAME} ${OBJS}
+
+std:		fclean
+			${CC} ${CFLAGS} -o ${NAME} ${SRCS} -D NAMESPACE=std
+
+all:		$(NAME)
 
 clean:
-	$(RM) $(OBJ)
+			${RM} ${OBJS}
 
-fclean: clean
-	$(RM) $(NAME)
+fclean:		clean
+			${RM} $(NAME)
 
-re: fclean all
+re:			fclean all
 
-run: all
-	./ft_containers
-
-.PHONY: all clean fclean re 
+.PHONY:		all clean fclean re
